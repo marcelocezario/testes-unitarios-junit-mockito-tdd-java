@@ -86,16 +86,4 @@ public class LocacaoService {
 				emailService.notificarAtraso(locacao.getUsuario());
 		}
 	}
-
-	public void setLocacaoDAO(LocacaoDAO dao) {
-		this.dao = dao;
-	}
-
-	public void setSPCService(SPCService spc) {
-		this.spc = spc;
-	}
-
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
-	}
 }

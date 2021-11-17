@@ -14,10 +14,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import br.ce.wcaquino.daos.LocacaoDAO;
-import br.ce.wcaquino.daos.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -27,10 +28,12 @@ import br.ce.wcaquino.exceptions.LocadoraException;
 @RunWith(Parameterized.class)
 public class CalculoValorLocacaoTest {
 
+	@InjectMocks
 	private LocacaoService service;
-	
+
+	@Mock
 	private LocacaoDAO dao;
-	
+	@Mock
 	private SPCService spc;
 
 	@Parameter
@@ -44,13 +47,9 @@ public class CalculoValorLocacaoTest {
 
 	@Before
 	public void setup() {
-		service = new LocacaoService();
-		dao = Mockito.mock(LocacaoDAO.class);
-		service.setLocacaoDAO(dao);
-		spc = Mockito.mock(SPCService.class);
-		service.setSPCService(spc);
+		MockitoAnnotations.openMocks(this);
 	}
-	
+
 	private static Filme filme1 = umFilme().agora();
 	private static Filme filme2 = umFilme().agora();
 	private static Filme filme3 = umFilme().agora();
@@ -58,17 +57,16 @@ public class CalculoValorLocacaoTest {
 	private static Filme filme5 = umFilme().agora();
 	private static Filme filme6 = umFilme().agora();
 	private static Filme filme7 = umFilme().agora();
-	
+
 	@Parameters(name = "{2}")
-	public static Collection<Object[]> getParametros(){
-		return Arrays.asList(new Object[][] {
-			{Arrays.asList(filme1, filme2), 8.0, "2 Filmes: Sem Desconto"},
-			{Arrays.asList(filme1, filme2, filme3), 11.0, "3 Filmes: 25%"},
-			{Arrays.asList(filme1, filme2, filme3, filme4), 13.0, "4 Filmes: 50%"},
-			{Arrays.asList(filme1, filme2, filme3, filme4, filme5), 14.0, "5 Filmes: 75%"},
-			{Arrays.asList(filme1, filme2, filme3, filme4, filme5, filme6), 14.0, "6 Filmes: 100%"},
-			{Arrays.asList(filme1, filme2, filme3, filme4, filme5, filme6, filme7), 18.0, "7 Filmes: Sem Desconto"}
-		});
+	public static Collection<Object[]> getParametros() {
+		return Arrays.asList(new Object[][] { { Arrays.asList(filme1, filme2), 8.0, "2 Filmes: Sem Desconto" },
+				{ Arrays.asList(filme1, filme2, filme3), 11.0, "3 Filmes: 25%" },
+				{ Arrays.asList(filme1, filme2, filme3, filme4), 13.0, "4 Filmes: 50%" },
+				{ Arrays.asList(filme1, filme2, filme3, filme4, filme5), 14.0, "5 Filmes: 75%" },
+				{ Arrays.asList(filme1, filme2, filme3, filme4, filme5, filme6), 14.0, "6 Filmes: 100%" },
+				{ Arrays.asList(filme1, filme2, filme3, filme4, filme5, filme6, filme7), 18.0,
+						"7 Filmes: Sem Desconto" } });
 	}
 
 	@Test
