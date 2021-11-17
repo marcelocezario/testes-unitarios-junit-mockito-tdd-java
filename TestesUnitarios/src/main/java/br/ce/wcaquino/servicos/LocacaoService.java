@@ -22,6 +22,7 @@ public class LocacaoService {
 	String vDefault;
 	
 	private LocacaoDAO dao;
+	private SPCService spc;
 
 	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
 		if (usuario == null) {
@@ -35,6 +36,10 @@ public class LocacaoService {
 		for (Filme filme : filmes) {
 			if (filme.getEstoque() == 0)
 				throw new FilmeSemEstoqueException();
+		}
+		
+		if(spc.possuiNegativacao(usuario)) {
+			throw new LocadoraException("Usuário negativado");
 		}
 
 		Locacao locacao = new Locacao();
@@ -72,5 +77,9 @@ public class LocacaoService {
 	
 	public void setLocacaoDAO(LocacaoDAO dao) {
 		this.dao = dao;
+	}
+	
+	public void setSPCService(SPCService spc) {
+		this.spc = spc;
 	}
 }
