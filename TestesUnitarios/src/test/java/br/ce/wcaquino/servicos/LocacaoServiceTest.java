@@ -1,8 +1,13 @@
 package br.ce.wcaquino.servicos;
 
+import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Date;
 
-import org.junit.Assert;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import br.ce.wcaquino.entidades.Filme;
@@ -24,9 +29,10 @@ public class LocacaoServiceTest {
 		Locacao locacao = service.alugarFilme(usuario, filme);
 
 		// verificação
-		Assert.assertEquals(5.0, locacao.getValor(), 0.01);
-		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
+		assertEquals(5.0, locacao.getValor(), 0.01);
+		assertThat(locacao.getValor(), CoreMatchers.is(5.0));
+		assertTrue(isMesmaData(locacao.getDataLocacao(), new Date()));
+		assertTrue(isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
 
 	}
 
