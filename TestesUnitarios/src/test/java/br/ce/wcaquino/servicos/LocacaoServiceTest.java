@@ -38,7 +38,7 @@ public class LocacaoServiceTest {
 	}
 
 	@Test
-	public void testeLocacao() throws Exception {
+	public void deveAlugarFilme() throws Exception {
 
 		// cenário
 		Usuario usuario = new Usuario("Usuario 1");
@@ -55,7 +55,7 @@ public class LocacaoServiceTest {
 	}
 
 	@Test(expected = FilmeSemEstoqueException.class)
-	public void testLocacao_filmeSemEstoque() throws Exception {
+	public void naoDeveAlugarFilmeSemEstoque() throws Exception {
 
 		// cenário
 		Usuario usuario = new Usuario("Usuario 1");
@@ -66,7 +66,7 @@ public class LocacaoServiceTest {
 	}
 
 	@Test
-	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
+	public void naoDeveAlugarFilmeSemUsuario() throws FilmeSemEstoqueException {
 		// cenario
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
 
@@ -80,7 +80,7 @@ public class LocacaoServiceTest {
 	}
 
 	@Test
-	public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException {
+	public void naoDeveAlugarFilmeSemFilme() throws FilmeSemEstoqueException, LocadoraException {
 
 		Usuario usuario = new Usuario("Usuario 1");
 
