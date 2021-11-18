@@ -9,7 +9,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerScheduler;
 
-@RunWith(BlockJUnit4ClassRunner.class)
+//@RunWith(BlockJUnit4ClassRunner.class)
 public class ParallelRunner extends BlockJUnit4ClassRunner {
 
 	public ParallelRunner(Class<?> klass) throws InitializationError {
