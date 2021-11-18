@@ -47,7 +47,7 @@ public class CalculoValorLocacaoTest {
 
 	@Before
 	public void setup() {
-		MockitoAnnotations.openMocks(this);
+		MockitoAnnotations.initMocks(this);
 	}
 
 	private static Filme filme1 = umFilme().agora();

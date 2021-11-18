@@ -38,15 +38,13 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
-import br.ce.wcaquino.matchers.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
-import net.bytebuddy.asm.Advice.Argument;
 
 public class LocacaoServiceTest {
 
 	@InjectMocks
 	private LocacaoService service;
-	
+
 	@Mock
 	private LocacaoDAO dao;
 	@Mock
@@ -62,7 +60,7 @@ public class LocacaoServiceTest {
 
 	@Before
 	public void setup() {
-		MockitoAnnotations.openMocks(this);
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
@@ -182,43 +180,43 @@ public class LocacaoServiceTest {
 		// verificação
 		verify(emailService, Mockito.times(3)).notificarAtraso(Mockito.any(Usuario.class));
 		verify(emailService).notificarAtraso(usuario);
-		//verify(emailService, Mockito.times(2)).notificarAtraso(usuario3);
+		// verify(emailService, Mockito.times(2)).notificarAtraso(usuario3);
 		verify(emailService, Mockito.atLeast(1)).notificarAtraso(usuario3);
 		verify(emailService, Mockito.never()).notificarAtraso(usuario2);
 		verifyNoMoreInteractions(emailService);
 	}
-	
+
 	@Test
 	public void deveTratarErroNoSPC() throws Exception {
-		//cenário
+		// cenário
 		Usuario usuario = umUsuario().agora();
 		List<Filme> filmes = Arrays.asList(umFilme().agora());
-		
+
 		Mockito.when(spc.possuiNegativacao(usuario)).thenThrow(new RuntimeException("Falha catastrófica!"));
-		
-		//verificação
+
+		// verificação
 		exception.expect(LocadoraException.class);
-		//exception.expectMessage("Falha catastrófica!");
+		// exception.expectMessage("Falha catastrófica!");
 		exception.expectMessage("Problemas com SPC, tente novamente");
-		
-		//ação
+
+		// ação
 		service.alugarFilme(usuario, filmes);
-		
+
 	}
-	
+
 	@Test
 	public void deveProrrogarUmaLocacao() {
-		//cenário
+		// cenário
 		Locacao locacao = LocacaoBuilder.umLocacao().agora();
-		
-		//ação
+
+		// ação
 		service.prorrogarLocacao(locacao, 3);
-		
-		//verificacao
+
+		// verificacao
 		ArgumentCaptor<Locacao> argCapt = ArgumentCaptor.forClass(Locacao.class);
 		Mockito.verify(dao).salvar(argCapt.capture());
 		Locacao locacaoRetornada = argCapt.getValue();
-		
+
 		error.checkThat(locacaoRetornada.getValor(), is(12.0));
 		error.checkThat(locacaoRetornada.getDataLocacao(), is(ehHoje()));
 		error.checkThat(locacaoRetornada.getDataRetorno(), is(ehHojeComDiferencaDias(3)));
